@@ -490,7 +490,7 @@ function forceRedraw() {
 
 
 // Load widgets, but don't show them
-Bangle.loadWidgets();
+//Bangle.loadWidgets();
 
 // DISABLE CLICK TO MENU
 // Bangle.setUI("clock");
