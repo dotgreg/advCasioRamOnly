@@ -20,13 +20,34 @@ const syncToBangle = (fileName, jsonObj) => {
 				jsonObj.tasks = jsonObj.tasks.match(/.{1,11}/g).join("\n")
 		}
 		const content = JSON.stringify(jsonObj)
-		log(`starting syncing process`);
+		log(`starting syncing process2`);
 		setTimeout(function() {
-				log(`writing "${content}" to ${fileName}`);
-				Puck.eval(`require("Storage").writeJSON("${fileName}", ${content})`,function(x) {
-						if (x === true) log("BANGLE => Writing success!")
-						else log(x);
-				})
+				// log(`writing2 "${content}" to ${fileName}`);
+				log(`RAM : uploading app with data => "${content}" `);
+				// Puck.eval(`require("Storage").writeJSON("${fileName}", ${content})`,function(x) {
+				// 		if (x === true) log("BANGLE => Writing success!")
+				// 		else log(x);
+				// })
+				// Puck.eval(`g.clear();g.setColor(255, 255, 0);g.fillRect(0, 0, g.getWidth(), g.getHeight());")`,function(x) {
+				const exec = (cmd) => {
+						console.log("EXEC => ", cmd);
+						Puck.write(`${cmd}\n`,function(x) {
+								if (x === true) log("BANGLE => [OK] : write")
+								else log(x);
+						})
+				}
+				const rmJump = (str) => {
+						return str.replaceAll('\n','').replaceAll('\t','');
+				}
+				const app = rmJump(window.bangle_app_flash);
+				const app2 = window.bangle_app_flash;
+				const header = window.bangle_app_flash_header;
+				const simple = window.bangle_app_flash_simple;
+				const final = `${header}${app}\n\n;`
+
+				const dataStr = `var dataJsonInt = ${content};`
+				// WORKING
+				exec(`${header}${dataStr}${app2}\n\n;`)
 		})
 }
 
